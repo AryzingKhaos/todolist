@@ -8,6 +8,10 @@ class TodoLabel extends Component {
 		super(props);
 		this.state = {
 			showContent: false,
+			isEditTitle: false,
+			curEditTitle: '',
+			isEditDesc: false,
+			curEditDesc: '',
 		};
 	}
 
@@ -16,33 +20,123 @@ class TodoLabel extends Component {
 	}
 
 	render() {
-		const {title, desc, isComplete, children} = this.props;
-		const {onFocus, onBlur, onClickAddChild, onClickRemove} = this.props;
-		console.log(title);
+		const {keyValue, title, desc, isComplete, children} = this.props; // 基础信息
+		const {searchTodoByKey, setTodoTitle, setTodoDesc, labelAddChild, labelRemoveThis, labelSetCompleteValue} = this.props; // function部分
+		const {marginLeft, perMarginLeft, fontSize, perFontSize} = this.props; // css样式部分
+		// console.log(marginLeft,perMarginLeft, fontSize, perFontSize);
 		return (
-			<div className="todolabel">
-				<div className="title" onClick={()=> {
-					this.setState({showContent: !this.state.showContent})
-				}} alt="双击编辑">{title}</div>
-				<div className={"desc"+(this.state.showContent ? ' show' :'')}>{desc}</div>
-				<div className="add-child">+</div>
-				<div></div>
+			<div className={"todolabel" + (isComplete ? ' completed' : '')}>
+
+				{/* title部分 */}
+				<div className="title" alt="双击编辑" style={{'marginLeft':marginLeft, 'fontSize': fontSize}}>
+					<div className="titleText" 
+						onClick={()=> {this.setState({showContent: !this.state.showContent})}} 
+						onDoubleClick = {()=> {this.setState({isEditTitle: !this.state.isEditTitle})}}
+					>{title}</div>
+					<div className={"titleEditBox" + (this.state.isEditTitle ? '' : ' hide')}>
+
+						<div className="editTitle" contentEditable="plaintext-only"
+							onBlur = {(event)=> {
+								// console.log(event.target.innerHTML);
+								this.setState({curEditTitle: event.target.innerHTML});
+							}}
+							dangerouslySetInnerHTML={{__html: title}}
+						></div>
+
+						<div className="divact editTitleBtn editTitleCancelBtn"
+							onClick={()=> {this.setState({isEditTitle: !this.state.isEditTitle})}}
+						>取消</div>
+
+						<div className="divact editTitleBtn editTitleConfirmBtn"
+							onClick={()=> {
+								setTodoTitle(keyValue, this.state.curEditTitle);
+								this.setState({isEditTitle: !this.state.isEditTitle})
+							}}
+						>确定</div>
+					</div>
+				</div>
+
+				{/* desc部分 */}
+				<div className={"desc"+(this.state.showContent ? ' show' :'')} style={{'marginLeft':marginLeft}}>
+					<div className="descText" 
+						onClick={()=> {this.setState({showContent: !this.state.showContent})}} 
+						onDoubleClick = {()=> {this.setState({isEditDesc: !this.state.isEditDesc})}}
+					>{desc}</div>
+
+					<div className={"descEditBox" + (this.state.isEditDesc ? '' : ' hide')}>
+
+						<div className="editDesc" contentEditable="plaintext-only"
+							onBlur = {(event)=> {
+								// console.log(event.target.innerHTML);
+								this.setState({curEditDesc: event.target.innerHTML});
+							}}
+							dangerouslySetInnerHTML={{__html: title}}
+						></div>
+
+						<div className="divact editDescBtn editDescCancelBtn"
+							onClick={()=> {this.setState({isEditDesc: !this.state.isEditDesc})}}
+						>取消</div>
+
+						<div className="divact editDescBtn editDescConfirmBtn"
+							onClick={()=> {
+								setTodoDesc(keyValue, this.state.curEditDesc);
+								this.setState({isEditDesc: !this.state.isEditDesc})
+							}}
+						>确定</div>
+						</div>
+					</div>
+
+				<div className="add-child" onClick={() => {labelAddChild(keyValue)}}>+</div>
+
+				<div className="remove-this" onClick={() => {labelRemoveThis(keyValue)}}>-</div>
+
+				<div className="complete-this">
+					<input type="checkbox" name="mycheckbox" id={"mycheckbox"+keyValue} checked={(isComplete ? 'checked' : '')}
+						onChange={(e) => {
+							console.log(e.target.checked);
+							if(e.target.checked){
+								labelSetCompleteValue(keyValue, true);
+							}else{
+								labelSetCompleteValue(keyValue, false);
+							}
+						}}
+					/>
+            		<label htmlFor={"mycheckbox"+keyValue}><i className="checkbox-dot"></i></label>
+				</div>
+
 				<div className="children">
-					{children && children.length && children.map((item, index) => {
-						return (
-							<TodoLabel 
-								key={item.key}
-								// onFocus={(label) => {this.labelFocus(label)}}
-								// onBlur={(label) => {this.labelBlur(label)}}
-								// onClickAddChild={(label) => {this.labelClickAddChild(label)}}
-								// onClickRemove={(label) => {this.labelClickRemove(label)}}
-								title={item.title}
-								desc={item.desc}
-								isComplete={item.isComplete}
-								children={item.children}
-							/>
-						)
-					})}
+					{
+						function() {
+							// console.log(children && children.length);
+							if(children && children.length){
+								return children.map((item, index) => {
+									return (
+										<TodoLabel 
+											key={item.key}
+											keyValue={item.key}
+											title={item.title}
+											desc={item.desc}
+											isComplete={item.isComplete}
+											children={item.children}
+
+											searchTodoByKey = {searchTodoByKey}
+											setTodoTitle = {setTodoTitle}
+											setTodoDesc = {setTodoDesc}
+											labelAddChild = {labelAddChild}
+											labelRemoveThis = {labelRemoveThis}
+											labelSetCompleteValue = {labelSetCompleteValue}
+
+											marginLeft={marginLeft+perMarginLeft}
+											fontSize={fontSize-perFontSize}
+											perMarginLeft={perMarginLeft}
+											perFontSize={perFontSize}
+										/>
+									)
+								})
+							}
+							return null;
+						}()
+					}
 				</div>
 			</div>
 		);

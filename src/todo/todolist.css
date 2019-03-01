@@ -1,9 +1,21 @@
+.divact{
+	opacity: 1;
+	transition: .1s all ease;
+}
+.divact:active{
+	opacity: .65;
+	transition: .1s all ease;
+	transform: scale(.97,.97);
+}
 div,a,span,i,b,p{
     box-sizing: border-box;
 }
 
 body{
     background-color: #f1f1f1;
+}
+.hide{
+    display: none;
 }
 
 .main{
@@ -14,19 +26,54 @@ body{
 }
 .todolabel{
     position: relative;
+    margin-bottom: 20px;
 }
+.todolabel.completed .title,.todolabel.completed .desc{text-decoration: line-through;}
 .todolabel .title{
     position: relative;
     height: 40px;
     line-height: 40px;
     width: 80%;
-    padding-left: 5px;
-    font: normal 24px "microsoft yahei";
+    padding-left: 10px;
+    font-weight: normal;
+    font-family: "microsoft yahei";
+    font-size: 24px;
+    border-left: 2px solid #aaa;
+}
+.todolabel .title .titleEditBox{
+    position: absolute;
+    top: 0;
+    left: 10px;
+    width: 100%;
+}
+.todolabel .title .editTitle{
+    /* position: absolute; */
+    float: left;
+    width: 74%;
+    border: 1px solid #39b0ff;
+    background-color: #ffce44;
+}
+.todolabel .title .editTitleBtn{
+    float: right;
+    margin-top: 5px;
+    margin-right: 10px;
+    width: 90px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 18px;
+    text-align: center;
+    color: #666;
+    background-color: #eee;
+    border: 1px solid #aaa;
+    cursor: pointer;
 }
 .todolabel .desc{
-    min-height: 0;
+    position: relative;
+    margin-bottom: 3px;
+    min-height: 20px;
     max-height: 0;
     max-width: 90%;
+    padding-left: 5px;
     transition: all .7s ease;
     overflow: hidden;
 }
@@ -34,7 +81,35 @@ body{
     max-height: 100px;
     transition: all .7s ease;
 }
-.todolabel .add-child{
+.todolabel .desc .descEditBox{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+.todolabel .desc .editDesc{
+    /* position: absolute; */
+    float: left;
+    width: 74%;
+    border: 1px solid #39b0ff;
+    background-color: #ffce44;
+}
+.todolabel .desc .editDescBtn{
+    float: right;
+    margin-top: 0;
+    margin-right: 10px;
+    width: 70px;
+    height: 20px;
+    line-height: 20px;
+    font-size: 14px;
+    text-align: center;
+    color: #666;
+    background-color: #eee;
+    border: 1px solid #aaa;
+    cursor: pointer;
+}
+
+.todolabel .add-child, .todolabel .remove-this, .todolabel .complete-this{
     position: absolute;
     top: 0;
     right: 5px;
@@ -46,5 +121,43 @@ body{
     text-align: center;
     line-height: 40px;
 }
+.todolabel .remove-this{
+    right: 35px;
+}
+.todolabel .complete-this{
+    right: 70px;
+}
+.todolabel .complete-this input[type="checkbox"]{
+    top: 10px;
+}
+input[type="checkbox"] + label > .checkbox-dot::before {
+    content: "\a0";
+    display: inline-block;
+    vertical-align: 10px;
+    width: 20px;
+    height: 20px;
+    /* margin-right: 20px; */
+    margin-top: 13px;
+    border-radius: 5px;
+    background-color: #ddd;
+    font-size: 40px;
+    font-weight: bold;
+    line-height: 20px;
+}
+input[type="checkbox"]:checked  + label > .checkbox-dot::before {
+    content: "\2713";
+    /*font-size: .24rem;*/
+    background-color: #ddd;
+    color: #39b0ff;
+}
+input[type="checkbox"] {
+    position: absolute;
+    clip: rect(0, 0, 0, 0);
+}
 
+
+/* 
+淡蓝色 #39b0ff 
+背景黄 #ffce44
+*/
 

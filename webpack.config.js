@@ -13,7 +13,8 @@ module.exports = (env) => {
         entry: {
             index: './src/index.js',
         },
-        target: "web",
+        // target: "web",
+        target: "electron-main",
         output: {
             path: path.resolve(__dirname + '/dist'),       //打包后的路径
             publicPath: '',
