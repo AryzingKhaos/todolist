@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import TodoLabel from './TodoLabel.js';
+import API from '../util/api.js';
 
 import './todolist.css';
 
@@ -66,6 +67,9 @@ class TodoLsit extends Component {
 				children:[],
 			}],
 		};
+		this.loadTodo = this.loadTodo.bind(this);
+		this.saveTodo = this.saveTodo.bind(this);
+
 		this.searchTodoByKey = this.searchTodoByKey.bind(this);
 		this.setTodoTitle = this.setTodoTitle.bind(this);
 		this.setTodoDesc = this.setTodoDesc.bind(this);
@@ -77,7 +81,23 @@ class TodoLsit extends Component {
 	}
 
 	componentDidMount() {
-		
+		this.loadTodo();
+	}
+
+	loadTodo(){
+		API.loadTodo().then(data => {
+			console.log(data);
+			this.setState({todo: data.data});
+		})
+	}
+
+	saveTodo(){
+		let {todo} = this.state;
+		API.saveTodo(todo).then(data => {
+			console.log(data);
+			if(data.code === 0)
+				alert('保存成功~');
+		})
 	}
 
 	searchTodoByKey(key, todo){
@@ -171,7 +191,7 @@ class TodoLsit extends Component {
 		console.log(this.state.todo);
 		return (
 			<div className="main">
-				<div>
+				<div className="todoLabelWrap">
 					{this.state.todo.map((item, index)=>{
 						// console.log(item);
 						return (
@@ -197,6 +217,7 @@ class TodoLsit extends Component {
 						);
 					})}
 				</div>
+				<div className="divact save-btn" onClick={() => {this.saveTodo()}}>保存</div>
 			</div>
 		);
 	}
