@@ -70,6 +70,8 @@ class TodoLsit extends Component {
 		this.loadTodo = this.loadTodo.bind(this);
 		this.saveTodo = this.saveTodo.bind(this);
 
+
+		
 		this.searchTodoByKey = this.searchTodoByKey.bind(this);
 		this.setTodoTitle = this.setTodoTitle.bind(this);
 		this.setTodoDesc = this.setTodoDesc.bind(this);
