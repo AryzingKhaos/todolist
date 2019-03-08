@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import TodoLabel from './TodoLabel.js';
 import API from '../util/api.js';
 
-import './todolist.css';
+import './common.css';
+import './TodoList.css';
 
 class TodoLsit extends Component {
 
@@ -114,7 +115,7 @@ class TodoLsit extends Component {
 			parentKey: parentKey,
 			isComplete: false,
 			title:'新建todo',
-			desc: '新建todo desc',
+			desc: '描述;',
 			children:[],
 		})
 		this.setState({todo: this.state.todo});
@@ -171,7 +172,7 @@ class TodoLsit extends Component {
 			parentKey: key,
 			isComplete: false,
 			title:'新建todo',
-			desc: '新建todo desc',
+			desc: '描述',
 			children:[],
 		})
 		this.setState({todo: this.state.todo});

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import "./todolist.css";
+import "./TodoList.css";
 
 class TodoLabel extends Component {
 
@@ -55,11 +55,11 @@ class TodoLabel extends Component {
 						>确定</div>
 					</div>
 
-					{/* 完成按钮 */}
+					{/* 完成的checkbox */}
 					<div className="complete-this">
 						<input type="checkbox" name="mycheckbox" id={"mycheckbox"+keyValue} checked={(isComplete ? 'checked' : '')}
 							onChange={(e) => {
-								console.log(e.target.checked);
+								// console.log(e.target.checked);
 								if(e.target.checked){
 									labelSetCompleteValue(keyValue, true);
 								}else{
@@ -85,7 +85,7 @@ class TodoLabel extends Component {
 								// console.log(event.target.innerHTML);
 								this.setState({curEditDesc: event.target.innerHTML});
 							}}
-							dangerouslySetInnerHTML={{__html: title}}
+							dangerouslySetInnerHTML={{__html: desc}}
 						></div>
 
 						<div className="divact editDescBtn editDescCancelBtn"

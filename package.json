@@ -1,11 +1,12 @@
 {
   "name": "todolist",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
+    "start": "set PORT=5400 && react-scripts start",
     "build-dev": "webpack --watch --mode development",
     "electron-start": "electron .",
     "electron-webpack": "webpack --target electron-renderer",
