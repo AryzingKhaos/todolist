@@ -13,23 +13,23 @@ class HomeList extends Component {
 			list:[{
 				id: 1,
 				name: '项目1',
-				imageClass: '',
+				imageClass: '1',
 			},{
 				id: 2,
 				name: '项目2',
-				imageClass: '',
+				imageClass: '2',
 			},{
 				id: 3,
 				name: '项目3',
-				imageClass: '',
+				imageClass: '3',
 			},{
 				id: 4,
 				name: '项目4',
-				imageClass: '',
+				imageClass: '4',
 			},{
 				id: 5,
 				name: '项目5',
-				imageClass: '',
+				imageClass: '5',
 			},],
 		};
 		this.loadHomeList = this.loadHomeList.bind(this);
@@ -50,7 +50,7 @@ class HomeList extends Component {
 				<div className="list-box clearfix">
 					{this.state.list.map((item, index) => {
 						return (
-							<Link to={'/todo/'+item.id} className={"divact list-one"+item.imageClass}>
+							<Link to={'/todo/'+item.id} className={"divact list-one img"+item.imageClass}>
 								<div className="mask"></div>
 								<div className="text">{item.name}</div>
 							</Link>

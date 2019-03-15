@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import TodoLabel from './TodoLabel.js';
 import API from '../util/api.js';
+import util from '../util/util.js';
 
 import './common.css';
 import './TodoList.css';
@@ -11,6 +12,8 @@ class TodoLsit extends Component {
 		super(props);
 		this.state = {
 			isArrange: false, // 是否整理
+			
+			historyTodo:[],
 			todo: [{
 				key: 1548577424000,
 				parentKey: null,
@@ -78,6 +81,8 @@ class TodoLsit extends Component {
 			}],
 		};
 		this.loadTodo = this.loadTodo.bind(this);
+		this.updateTodo = this.updateTodo.bind(this);
+		this.undoTodo = this.undoTodo.bind(this);
 		this.newTodo = this.newTodo.bind(this);
 		this.saveTodo = this.saveTodo.bind(this);
 		this.arrangeTodo = this.arrangeTodo.bind(this);
@@ -94,6 +99,8 @@ class TodoLsit extends Component {
 		
 	}
 
+	editTodo = null; // 当前编辑的todo
+
 	componentDidMount() {
 		this.loadTodo();
 		// this.setState({isArrange: true});
@@ -103,6 +110,30 @@ class TodoLsit extends Component {
 		API.loadTodo().then(data => {
 			console.log(data);
 			this.setState({todo: data.data});
+		})
+	}
+
+	updateTodo(){
+		let {historyTodo} = this.state;
+		let stateTodo = util.deepCopy(this.state.todo);
+		historyTodo.push(stateTodo);
+		console.log(historyTodo);
+		console.log(historyTodo[0][0].children[1].title);
+		this.setState({
+			historyTodo: historyTodo,
+			todo: this.editTodo,
+		})
+	}
+
+	// 撤销
+	undoTodo(){
+		let {historyTodo} = this.state;
+		if(!historyTodo.length) return;
+		let todo = historyTodo.pop();
+		console.log(historyTodo, todo);
+		this.setState({
+			historyTodo: historyTodo,
+			todo: todo,
 		})
 	}
 
@@ -152,9 +183,15 @@ class TodoLsit extends Component {
 	}
 
 	setTodoTitle(key, title){
-		let todo = this.searchTodoByKey(key);
+		this.editTodo = util.deepCopy(this.state.todo);
+		console.log(this.editTodo);
+		console.log(this.editTodo[0].children[1].title);
+		console.log(this.state.todo[0].children[1].title);
+		let todo = this.searchTodoByKey(key, this.editTodo);
 		todo.title = title;
-		this.setState({todo: this.state.todo});
+		console.log(this.editTodo[0].children[1].title);
+		console.log(this.state.todo[0].children[1].title);
+		this.updateTodo();
 	}
 	
 	setTodoDesc(key, desc){
@@ -249,7 +286,7 @@ class TodoLsit extends Component {
 
 	render() {
 		console.log(this.state.todo);
-		let copyTodo = this.state.todo.concat([]);
+		let copyTodo = util.deepCopy(this.state.todo);
 		if(this.state.isArrange){
 			copyTodo.sort(function(a, b){
 				return a.isComplete - b.isComplete;
@@ -294,6 +331,7 @@ class TodoLsit extends Component {
 					<div className="divact btn new-btn" onClick={() => {this.newTodo()}}>新增Todo</div>
 					<div className="divact btn arrange-btn" onClick={() => {this.arrangeTodo()}}>{this.state.isArrange ? '不整理' : '整理'}</div>
 					<div className="divact btn save-btn" onClick={() => {this.saveTodo()}}>保存</div>
+					<div className="divact btn undo-btn" onClick={() => {this.undoTodo()}}>撤销</div>
 				</div>
 			</div>
 		);

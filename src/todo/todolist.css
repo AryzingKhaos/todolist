@@ -94,7 +94,7 @@
 }
 
 
-.todolabel .add-child, .todolabel .remove-this, .todolabel .complete-this{
+.todolabel .add-child, .todolabel .remove-this, .todolabel .complete-this, .todolabel .show-this{
     position: absolute;
     top: 0;
     right: 5px;
@@ -105,10 +105,20 @@
     height: 30px;
     text-align: center;
     line-height: 30px;
+    transition: all .7s ease;
+}
+.todolabel .add-child:hover, .todolabel .remove-this:hover{
+    transform: rotate(180deg);
+    transition: all .7s ease;
+}
+.todolabel .show-this.rotate{
+    transform: rotate(180deg);
+    transition: all .7s ease;
 }
 .todolabel .complete-this{left: 5px;}
-.todolabel .remove-this{right: 35px;}
+.todolabel .remove-this{right: 45px;}
 .todolabel .complete-this{right: 70px;}
+.todolabel .show-this{right: 90px;}
 .todolabel .complete-this input[type="checkbox"]{top: 10px;}
 
 .todolabel .children{
