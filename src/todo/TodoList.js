@@ -166,7 +166,11 @@ class TodoLsit extends Component {
 	}
 
 	searchTodoByKey(key, todo){
-		if(!todo) todo = this.state.todo;
+		if(!todo && this.editTodo){
+			todo = this.editTodo;
+		}else if(!todo && !this.editTodo){
+			todo = this.state.todo;
+		}
 		for(let i = 0; i < todo.length; i++){
 			if(todo[i].key === key){ return todo[i];}
 			else{
@@ -184,26 +188,23 @@ class TodoLsit extends Component {
 
 	setTodoTitle(key, title){
 		this.editTodo = util.deepCopy(this.state.todo);
-		console.log(this.editTodo);
-		console.log(this.editTodo[0].children[1].title);
-		console.log(this.state.todo[0].children[1].title);
 		let todo = this.searchTodoByKey(key, this.editTodo);
 		todo.title = title;
-		console.log(this.editTodo[0].children[1].title);
-		console.log(this.state.todo[0].children[1].title);
 		this.updateTodo();
 	}
 	
 	setTodoDesc(key, desc){
-		let todo = this.searchTodoByKey(key);
+		this.editTodo = util.deepCopy(this.state.todo);
+		let todo = this.searchTodoByKey(key, this.editTodo);
 		todo.desc = desc;
-		this.setState({todo: this.state.todo});
+		this.updateTodo();
 	}
 
 	labelAddChild(key){
+		this.editTodo = util.deepCopy(this.state.todo);
 		let newKey = Date.parse(new Date())+parseInt(Math.random() * 1000);
 		console.log(newKey);
-		let parentTodo = this.searchTodoByKey(key);
+		let parentTodo = this.searchTodoByKey(key, this.editTodo);
 		parentTodo.children.push({
 			key: newKey,
 			parentKey: key,
@@ -212,13 +213,14 @@ class TodoLsit extends Component {
 			desc: '描述',
 			children:[],
 		})
-		this.setState({todo: this.state.todo});
+		this.updateTodo();
 	}
 
 	labelRemoveThis(key){
-		let todo = this.searchTodoByKey(key);
+		this.editTodo = util.deepCopy(this.state.todo);
+		let todo = this.searchTodoByKey(key, this.editTodo);
 		let parentKey = todo.parentKey;
-		let parentTodo = this.searchTodoByKey(parentKey);
+		let parentTodo = this.searchTodoByKey(parentKey, this.editTodo);
 		if(!parentTodo){
 			parentTodo = {};
 			parentTodo.children = this.state.todo;
@@ -230,12 +232,12 @@ class TodoLsit extends Component {
 			}
 		}
 		parentTodo.children.splice(index,1);
-		this.setState({todo: this.state.todo});
+		this.updateTodo();
 	}
 
 	labelSetCompleteValue(key, bool){
-		// console.log('执行labelSetCompleteValue'+key);
-		let todo = this.searchTodoByKey(key);
+		this.editTodo = util.deepCopy(this.state.todo);
+		let todo = this.searchTodoByKey(key, this.editTodo);
 		if(!todo) return;
 		bool === true ? (todo.isComplete = true) :  (todo.isComplete = false);
 		
@@ -246,7 +248,7 @@ class TodoLsit extends Component {
 		this.labelSetParentsCompletedValue(key, bool);
 		this.labelSetChildrenCompletedValue(todo.children, bool);
 
-		this.setState({todo: this.state.todo});
+		this.updateTodo();
 	}
 
 	// 设置父todo的是否完成值，并且只向父todo延伸
@@ -281,8 +283,6 @@ class TodoLsit extends Component {
 		// console.log(todo.title+' is completed!');
 		return true;
 	}
-
-
 
 	render() {
 		console.log(this.state.todo);
