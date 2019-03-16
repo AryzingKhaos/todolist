@@ -1,9 +1,13 @@
 
 // import * as bodyParser from 'body-parser';
+// import * as file from './file.mjs';
+var file = require('./file.js');
 var bodyParser = require('body-parser');
 var fs = require('fs');
 var express = require('express');
+var url = require('url');
 var app = express();
+var querystring = require("querystring");
 // const router = express.Router();
 
 var options = {
@@ -30,7 +34,7 @@ app.all('*', function(req, res, next) {
 let successJsonFunc = function(data){
     return JSON.stringify({
         code: 0,
-        data: JSON.parse(data),
+        data: data,
         msg: ''
     });
 }
@@ -53,7 +57,15 @@ app.get('/', function(req,res){
 app.get('/todo/read', function(req, res){
     //设置允许跨域请求
     var reqOrigin = req.header("origin");
-    console.log(reqOrigin);
+    // console.log(reqOrigin);
+    console.log(req.url);
+
+    //获取返回的url对象的query属性值 
+	var arg = url.parse(req.url).query;
+	//将arg参数字符串反序列化为一个对象
+    var params = querystring.parse(arg);
+    var id = params.id;
+    console.log(id);
 
     if(reqOrigin !=undefined > -1){
         //设置允许 http://localhost:3000 这个域响应
@@ -68,30 +80,53 @@ app.get('/todo/read', function(req, res){
             res.send(1005, null, '读取文件失败');
             return console.error(err);
         }
-        var todo = data.toString();//将二进制的数据转换为字符串
-        res.send(successJsonFunc(todo));
+        var dataStr = data.toString();//将二进制的数据转换为字符串
+        // console.log(dataStr);
+        var dataObj = JSON.parse(dataStr);
+        // console.log(dataObj);
+        let findTodo = findTodoById(dataObj, parseInt(id));
+        // console.log(findTodo);
+        // console.log(typeof findTodo.todo);
+        if(findTodo){
+            res.send(successJsonFunc(findTodo.todo));
+        }else{
+            res.send(failJsonFunc(1009, {}, '没有找到这个id的todo'));
+        }
     })
 })
 
-app.post('/todo/save', function(req, res){
-    fs.readFile('./src/mock/todo.json', function(err, data){
-        if(err){
-            res.send(1005, null, '读取文件失败');
-            return console.error(err);
-        }
-        // 备份todo
-        fs.writeFile('./src/mock/todo-backup.json',data.toString(),function(err){
-            if(err){
-                return console.error(err);
-            }
-            console.log('----------备份todo成功-------------');
-        })
 
+function findTodoById(arr, id){
+    if(!arr || !arr.length) return null;
+    if(!id) return null;
+    for(let i = 0; i < arr.length; i++){
+        if(arr[i].id === id){
+            return arr[i];
+        }
+    }
+    return null;
+}
+
+app.post('/todo/save', function(req, res){
+
+    file.readMock()
+    .then(function(data){
+        // 备份todo
+        return file.backupTodo(data.toString()).then(function(data){
+            console.log('----------备份todo成功-------------');
+            return data;
+        }).catch(function(err){
+            return console.error(err);
+        })
+    })
+    .then(function(dataStr){
         // 获取请求的内容
-        let todoJsonStr;
+        let finalStr, todoJsonStr, todoId;
+        let data = JSON.parse(dataStr);
         console.log(req.body);
         if(req.body){
            todoJsonStr = JSON.stringify(req.body.todo);
+           todoId = req.body.id;
         }else{
             res.send(failJsonFunc(1005, null, '请求没有body'));
             return console.error('请求没有body');
@@ -99,16 +134,36 @@ app.post('/todo/save', function(req, res){
         if(!todoJsonStr){
             return console.error('todoJsonStr为空');
         }
+        let changeTodo = findTodoById(data, todoId);
+        changeTodo.updateTime = Date.parse(new Date());
+        changeTodo.todo = todoJsonStr;
+        console.log(data);
+        finalStr = JSON.stringify(data);
 
+        return finalStr;
+    })
+    .then(function(finalStr){
         // 写入todo.json文件
-        fs.writeFile('./src/mock/todo.json',todoJsonStr,function(err){
-            if(err){
-                res.send(1005, null, '写入文件失败');
-                return console.error(err);
-            }
+        return file.writeTodo(finalStr).then(function(data){
             console.log('----------保存todo成功-------------');
             res.send(successJsonFunc(null));
+        }).catch(function(err){
+            res.send(1005, null, '写入文件失败');
+            return console.error(err);
         })
+    })
+    .catch(function(err){
+        res.send(1005, null, '读取文件失败');
+        return console.error(err);
+    })
+
+
+    fs.readFile('./src/mock/todo.json', function(err, data){
+        if(err){
+            res.send(1005, null, '读取文件失败');
+            return console.error(err);
+        }
+        
     })
 })
 

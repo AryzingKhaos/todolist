@@ -102,14 +102,20 @@ class TodoLsit extends Component {
 	editTodo = null; // 当前编辑的todo
 
 	componentDidMount() {
-		this.loadTodo();
+		let id = this.props.match.params.id;
+		console.log(id);
+		this.loadTodo(id);
 		// this.setState({isArrange: true});
 	}
 
-	loadTodo(){
-		API.loadTodo().then(data => {
+	loadTodo(id){
+		API.loadTodo(id).then(data => {
 			console.log(data);
-			this.setState({todo: data.data});
+			if(!data){
+				this.setState({todo: []});
+			}else{
+				this.setState({todo: data.data});
+			}
 		})
 	}
 
@@ -153,8 +159,9 @@ class TodoLsit extends Component {
 	}
 
 	saveTodo(){
+		let id = this.props.match.params.id;
 		let {todo} = this.state;
-		API.saveTodo(todo).then(data => {
+		API.saveTodo(id, todo).then(data => {
 			console.log(data);
 			if(data.code === 0)
 				alert('保存成功~');
@@ -286,6 +293,9 @@ class TodoLsit extends Component {
 
 	render() {
 		console.log(this.state.todo);
+		if(!this.state.todo.length){
+			return '无此todo';
+		}
 		let copyTodo = util.deepCopy(this.state.todo);
 		if(this.state.isArrange){
 			copyTodo.sort(function(a, b){

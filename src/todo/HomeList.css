@@ -15,26 +15,26 @@
     box-shadow: 0 0 2px #ddd;
     background-image: url(../static/images/example.jpg);
 }
-.list-box .list-one.img1{background-image: url(../static/images/bg/1.jpg)}
-.list-box .list-one.img2{background-image: url(../static/images/bg/2.jpg)}
-.list-box .list-one.img3{background-image: url(../static/images/bg/3.jpg)}
-.list-box .list-one.img4{background-image: url(../static/images/bg/4.jpg)}
-.list-box .list-one.img5{background-image: url(../static/images/bg/5.jpg)}
-.list-box .list-one.img6{background-image: url(../static/images/bg/6.jpg)}
-.list-box .list-one.img7{background-image: url(../static/images/bg/7.jpg)}
-.list-box .list-one.img8{background-image: url(../static/images/bg/8.jpg)}
-.list-box .list-one.img9{background-image: url(../static/images/bg/9.jpg)}
-.list-box .list-one.img10{background-image: url(../static/images/bg/10.jpg)}
-.list-box .list-one.img11{background-image: url(../static/images/bg/11.jpg)}
-.list-box .list-one.img12{background-image: url(../static/images/bg/12.jpg)}
-.list-box .list-one.img13{background-image: url(../static/images/bg/13.jpg)}
-.list-box .list-one.img14{background-image: url(../static/images/bg/14.jpg)}
-.list-box .list-one.img15{background-image: url(../static/images/bg/15.jpg)}
-.list-box .list-one.img16{background-image: url(../static/images/bg/16.jpg)}
-.list-box .list-one.img17{background-image: url(../static/images/bg/17.jpg)}
-.list-box .list-one.img18{background-image: url(../static/images/bg/18.jpg)}
-.list-box .list-one.img19{background-image: url(../static/images/bg/19.jpg)}
-.list-box .list-one.img20{background-image: url(../static/images/bg/20.jpg)}
+.list-box .list-one.img1{background-image: url(../static/images/ignorbg/1.jpg)}
+.list-box .list-one.img2{background-image: url(../static/images/ignorbg/2.jpg)}
+.list-box .list-one.img3{background-image: url(../static/images/ignorbg/3.jpg)}
+.list-box .list-one.img4{background-image: url(../static/images/ignorbg/4.jpg)}
+.list-box .list-one.img5{background-image: url(../static/images/ignorbg/5.jpg)}
+.list-box .list-one.img6{background-image: url(../static/images/ignorbg/6.jpg)}
+.list-box .list-one.img7{background-image: url(../static/images/ignorbg/7.jpg)}
+.list-box .list-one.img8{background-image: url(../static/images/ignorbg/8.jpg)}
+.list-box .list-one.img9{background-image: url(../static/images/ignorbg/9.jpg)}
+.list-box .list-one.img10{background-image: url(../static/images/ignorbg/10.jpg)}
+.list-box .list-one.img11{background-image: url(../static/images/ignorbg/11.jpg)}
+.list-box .list-one.img12{background-image: url(../static/images/ignorbg/12.jpg)}
+.list-box .list-one.img13{background-image: url(../static/images/ignorbg/13.jpg)}
+.list-box .list-one.img14{background-image: url(../static/images/ignorbg/14.jpg)}
+.list-box .list-one.img15{background-image: url(../static/images/ignorbg/15.jpg)}
+.list-box .list-one.img16{background-image: url(../static/images/ignorbg/16.jpg)}
+.list-box .list-one.img17{background-image: url(../static/images/ignorbg/17.jpg)}
+.list-box .list-one.img18{background-image: url(../static/images/ignorbg/18.jpg)}
+.list-box .list-one.img19{background-image: url(../static/images/ignorbg/19.jpg)}
+.list-box .list-one.img20{background-image: url(../static/images/ignorbg/20.jpg)}
 .list-box .list-one:hover{
     box-shadow: 0 0 25px #aaa;
     transition: all .7s ease;

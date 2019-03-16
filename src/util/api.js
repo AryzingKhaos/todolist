@@ -43,12 +43,15 @@ API.httpPost = function (url, data) {
     });
 };
 
-API.loadTodo = function(){
-    return API.httpGet(domain + 'todo/read/', {});
+API.loadTodo = function(id){
+    return API.httpGet(domain + 'todo/read/', {
+        id:id,
+    });
 }
 
-API.saveTodo = function(todo){
+API.saveTodo = function(id, todo){
     return API.httpPost(domain + 'todo/save/', {
+        id: id,
         todo: todo,
     });
 }
