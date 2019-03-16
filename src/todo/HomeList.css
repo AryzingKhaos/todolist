@@ -1,0 +1,84 @@
+.list-box{
+    width: 100%;
+    height: 100%;
+    background-color: #f1f1f1;
+    padding: 22px;
+}
+.list-box .list-one{
+    position: relative;
+    float: left;
+    margin: 0 20px 20px 0;
+    width: 230px;
+    height: 230px;
+    background-color: #fff;
+    transition: all .7s ease;
+    box-shadow: 0 0 2px #ddd;
+    background-image: url(../static/images/example.jpg);
+}
+.list-box .list-one.img1{background-image: url(../static/images/bg/1.jpg)}
+.list-box .list-one.img2{background-image: url(../static/images/bg/2.jpg)}
+.list-box .list-one.img3{background-image: url(../static/images/bg/3.jpg)}
+.list-box .list-one.img4{background-image: url(../static/images/bg/4.jpg)}
+.list-box .list-one.img5{background-image: url(../static/images/bg/5.jpg)}
+.list-box .list-one.img6{background-image: url(../static/images/bg/6.jpg)}
+.list-box .list-one.img7{background-image: url(../static/images/bg/7.jpg)}
+.list-box .list-one.img8{background-image: url(../static/images/bg/8.jpg)}
+.list-box .list-one.img9{background-image: url(../static/images/bg/9.jpg)}
+.list-box .list-one.img10{background-image: url(../static/images/bg/10.jpg)}
+.list-box .list-one.img11{background-image: url(../static/images/bg/11.jpg)}
+.list-box .list-one.img12{background-image: url(../static/images/bg/12.jpg)}
+.list-box .list-one.img13{background-image: url(../static/images/bg/13.jpg)}
+.list-box .list-one.img14{background-image: url(../static/images/bg/14.jpg)}
+.list-box .list-one.img15{background-image: url(../static/images/bg/15.jpg)}
+.list-box .list-one.img16{background-image: url(../static/images/bg/16.jpg)}
+.list-box .list-one.img17{background-image: url(../static/images/bg/17.jpg)}
+.list-box .list-one.img18{background-image: url(../static/images/bg/18.jpg)}
+.list-box .list-one.img19{background-image: url(../static/images/bg/19.jpg)}
+.list-box .list-one.img20{background-image: url(../static/images/bg/20.jpg)}
+.list-box .list-one:hover{
+    box-shadow: 0 0 25px #aaa;
+    transition: all .7s ease;
+
+}
+.list-box .list-one .mask{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    opacity: 0.3;
+    transition: all .7s ease;
+}
+.list-box .list-one img{width: 100%;height: 100%;}
+.list-box .list-one .text{
+    position: absolute;
+    top: 90px;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    font-size: 24px;
+    text-align: center;
+    color: #fff;
+    background-color: rgba(0,0,0,.3);
+    transition: all .7s ease;
+}
+.list-box .list-one:hover .text{
+    top: 65px;
+    width: 100%;
+    height: 100px;
+    line-height: 100px;
+    background-color: rgba(0,0,0,.5);
+    transition: all .7s ease;
+}
+.list-box .list-one:hover .mask{
+    opacity: 0;
+    transition: all .7s ease;
+}
+.list-box .list-one:nth-child(4n){margin-right: 0;}
+
+
+
+
+
+
+
