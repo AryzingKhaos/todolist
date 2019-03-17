@@ -76,7 +76,9 @@
 }
 .list-box .list-one:nth-child(4n){margin-right: 0;}
 
-
+.add-todo-list-btn{
+    width: 140px;
+}
 
 
 

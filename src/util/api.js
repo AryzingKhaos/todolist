@@ -56,6 +56,18 @@ API.saveTodo = function(id, todo){
     });
 }
 
+API.getHomeList = function(){
+    return API.httpGet(domain + 'todo/list/', {
+    });
+}
+
+API.addTodoList = function(title, desc){
+    return API.httpPost(domain + 'todo/add/', {
+        title: title,
+        desc: desc,
+    });
+}
+
 export default API;
 
 

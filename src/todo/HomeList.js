@@ -40,6 +40,10 @@ class HomeList extends Component {
 	}
 
 	loadHomeList(){
+		API.getHomeList().then((data) => {
+			console.log(data.data);
+			this.setState({list: data.data});
+		})
 	}
 
 
@@ -50,12 +54,15 @@ class HomeList extends Component {
 				<div className="list-box clearfix">
 					{this.state.list.map((item, index) => {
 						return (
-							<Link to={'/todo/'+item.id} className={"divact list-one img"+item.imageClass}>
+							<Link to={'/todo/'+item.id} key={item.id} className={"divact list-one img"+item.imageClass}>
 								<div className="mask"></div>
 								<div className="text">{item.name}</div>
 							</Link>
 						)
 					})}
+				</div>
+				<div className="btnbox">
+					<div className="divact btn add-todo-list-btn" onClick={() => {this.newTodo()}}>新增TodoList</div>
 				</div>
 			</div>
 		);
