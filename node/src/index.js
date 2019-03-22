@@ -36,11 +36,16 @@ app.all('*', function(req, res, next) {
 });
 
 let successJsonFunc = function(data){
-    return JSON.stringify({
+    // return JSON.stringify({
+    //     code: 0,
+    //     data: data,
+    //     msg: ''
+    // });
+    return {
         code: 0,
         data: data,
         msg: ''
-    });
+    };
 }
 let failJsonFunc = function(code, data, msg){
     return JSON.stringify({
@@ -92,6 +97,7 @@ app.get('/todo/read', function(req, res){
         // console.log(findTodo);
         // console.log(typeof findTodo.todo);
         if(findTodo){
+            findTodo.todo = JSON.parse(findTodo.todo);
             res.send(successJsonFunc(findTodo.todo));
         }else{
             res.send(failJsonFunc(1009, {}, '没有找到这个id的todo'));
@@ -104,14 +110,15 @@ app.post('/todo/save', function(req, res){
     file.readMock()
     .then(function(data){
         // 备份todo
-        return file.backupTodo(data.toString()).then(function(data){
+        return file.backupTodo(data.toString()).then(function(){
             console.log('----------备份todo成功-------------');
-            return data;
+            return data.toString();//将二进制的数据转换为字符串
         }).catch(function(err){
             return console.error(err);
         })
     })
     .then(function(dataStr){
+        // console.log(dataStr);
         // 获取请求的内容
         let finalStr, todoJsonStr, todoId;
         let data = JSON.parse(dataStr);
@@ -129,7 +136,7 @@ app.post('/todo/save', function(req, res){
         let changeTodo = util.findTodoById(data, todoId);
         changeTodo.updateTime = Date.parse(new Date());
         changeTodo.todo = todoJsonStr;
-        console.log(data);
+        // console.log(data);
         finalStr = JSON.stringify(data);
 
         return finalStr;

@@ -230,7 +230,7 @@ class TodoLsit extends Component {
 		let parentTodo = this.searchTodoByKey(parentKey, this.editTodo);
 		if(!parentTodo){
 			parentTodo = {};
-			parentTodo.children = this.state.todo;
+			parentTodo.children = this.editTodo;
 		}
 		let index;
 		for(let i = 0; i < parentTodo.children.length; i++){

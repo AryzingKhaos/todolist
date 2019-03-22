@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import API from '../util/api.js';
 import {Link} from 'react-router-dom';
+import SelfAdaptionPopup from '../component/SelfAdaptionPopup.js';
 
 import './common.css';
 import './HomeList.css';
@@ -31,6 +32,7 @@ class HomeList extends Component {
 				name: '项目5',
 				imageClass: '5',
 			},],
+			isShowNewTodo: false,
 		};
 		this.loadHomeList = this.loadHomeList.bind(this);
 	}
@@ -48,6 +50,17 @@ class HomeList extends Component {
 
 
 	render() {
+		let newTodoFormArr = [
+			{
+				title: '标题',
+				placeHolder: '请输入列表标题',
+				type: 'input'
+			},{
+				title: '描述',
+				placeHolder: '请输入列表描述',
+				type: 'input'
+			}
+		]
 
 		return (
 			<div className="main">
@@ -64,6 +77,14 @@ class HomeList extends Component {
 				<div className="btnbox">
 					<div className="divact btn add-todo-list-btn" onClick={() => {this.newTodo()}}>新增TodoList</div>
 				</div>
+				{
+					this.state.isShowNewTodo ?
+					(<SelfAdaptionPopup 
+						title="新建todo列表"
+						formArr={newTodoFormArr}
+					/>) :
+					null
+				}
 			</div>
 		);
 	}
