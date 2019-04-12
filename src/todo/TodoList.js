@@ -86,6 +86,10 @@ class TodoLsit extends Component {
 		this.newTodo = this.newTodo.bind(this);
 		this.saveTodo = this.saveTodo.bind(this);
 		this.arrangeTodo = this.arrangeTodo.bind(this);
+		this.labelHideThis = this.labelHideThis.bind(this);
+		this.showAllTodo = this.showAllTodo.bind(this);
+		this.setArrayAllValue = this.setArrayAllValue.bind(this);
+		this.labelListThis = this.labelListThis.bind(this);
 
 		this.searchTodoByKey = this.searchTodoByKey.bind(this);
 		this.setTodoTitle = this.setTodoTitle.bind(this);
@@ -124,7 +128,7 @@ class TodoLsit extends Component {
 		let stateTodo = util.deepCopy(this.state.todo);
 		historyTodo.push(stateTodo);
 		console.log(historyTodo);
-		console.log(historyTodo[0][0].children[1].title);
+		// console.log(historyTodo[0][0].children[1].title);
 		this.setState({
 			historyTodo: historyTodo,
 			todo: this.editTodo,
@@ -147,12 +151,12 @@ class TodoLsit extends Component {
 		let newKey = Date.parse(new Date())+parseInt(Math.random() * 1000);
 		console.log(newKey);
 		let parentKey = null;
-		this.state.todo.push({
+		this.state.todo.unshift({
 			key: newKey,
 			parentKey: parentKey,
 			isComplete: false,
 			title:'新建todo',
-			desc: '描述;',
+			desc: '创建于'+util.formatTime(new Date(newKey), "yyyy-MM-dd HH:mm:ss"),
 			children:[],
 		})
 		this.setState({todo: this.state.todo});
@@ -212,7 +216,9 @@ class TodoLsit extends Component {
 		let newKey = Date.parse(new Date())+parseInt(Math.random() * 1000);
 		console.log(newKey);
 		let parentTodo = this.searchTodoByKey(key, this.editTodo);
-		parentTodo.children.push({
+		parentTodo.isList = true;
+		parentTodo.isComplete = false;
+		parentTodo.children.unshift({
 			key: newKey,
 			parentKey: key,
 			isComplete: false,
@@ -239,6 +245,46 @@ class TodoLsit extends Component {
 			}
 		}
 		parentTodo.children.splice(index,1);
+		this.updateTodo();
+	}
+
+	// 隐藏一个todo
+	labelHideThis(key){
+		this.editTodo = util.deepCopy(this.state.todo);
+		let todo = this.searchTodoByKey(key, this.editTodo);
+		if(!todo.isHide){
+			todo.isHide = true;
+		}
+		this.updateTodo();
+	}
+
+	// 显示所有隐藏的todo
+	showAllTodo(){
+		this.editTodo = util.deepCopy(this.state.todo);
+		this.setArrayAllValue(this.editTodo, 'isHide', false);
+		this.updateTodo();
+	}
+
+	
+
+	// 遍历数组，将所有的key属性都设置为value的值
+	setArrayAllValue(array, key, value){
+		for(let i = 0;  i < array.length; i++){
+			array[i][key] = value;
+			this.setArrayAllValue(array[i].children, key, value);
+		}
+	}
+
+	// 显示该项的所有子项
+	labelListThis(key){
+		this.editTodo = util.deepCopy(this.state.todo);
+		let todo = this.searchTodoByKey(key, this.editTodo);
+		if(!todo.isList){
+			todo.isList = true;
+		}else{
+			todo.isList = false;
+		}
+
 		this.updateTodo();
 	}
 
@@ -302,8 +348,16 @@ class TodoLsit extends Component {
 				return a.isComplete - b.isComplete;
 			})
 		}
+
 		return (
 			<div className="main">
+				<div className="btnbox">
+					<div className="divact btn new-btn" onClick={() => {this.newTodo()}}>新增Todo</div>
+					<div className="divact btn arrange-btn" onClick={() => {this.arrangeTodo()}}>{this.state.isArrange ? '不整理' : '整理'}</div>
+					<div className="divact btn save-btn" onClick={() => {this.saveTodo()}}>保存</div>
+					<div className="divact btn save-btn" onClick={() => {this.showAllTodo()}}>显示全部</div>
+					<div className="divact btn undo-btn" onClick={() => {this.undoTodo()}}>撤销</div>
+				</div>
 				<div className="todoLabelWrap">
 					{copyTodo.map((item, index)=>{
 						// console.log(item);
@@ -315,6 +369,8 @@ class TodoLsit extends Component {
 								isComplete={item.isComplete}
 								children={item.children}
 								isArrange={this.state.isArrange}
+								isHide={item.isHide}
+								isList={item.isList}
 
 								// 方法
 								searchTodoByKey = {this.searchTodoByKey}
@@ -323,6 +379,8 @@ class TodoLsit extends Component {
 								labelAddChild = {this.labelAddChild}
 								labelRemoveThis = {this.labelRemoveThis}
 								labelSetCompleteValue = {this.labelSetCompleteValue}
+								labelHideThis = {this.labelHideThis}
+								labelListThis = {this.labelListThis}
 
 								// 文本
 								title={item.title}
@@ -337,12 +395,7 @@ class TodoLsit extends Component {
 						);
 					})}
 				</div>
-				<div className="btnbox">
-					<div className="divact btn new-btn" onClick={() => {this.newTodo()}}>新增Todo</div>
-					<div className="divact btn arrange-btn" onClick={() => {this.arrangeTodo()}}>{this.state.isArrange ? '不整理' : '整理'}</div>
-					<div className="divact btn save-btn" onClick={() => {this.saveTodo()}}>保存</div>
-					<div className="divact btn undo-btn" onClick={() => {this.undoTodo()}}>撤销</div>
-				</div>
+				
 			</div>
 		);
 	}

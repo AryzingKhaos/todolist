@@ -19,6 +19,8 @@
     /* text-decoration: line-through; */
     color: #999;
 }
+.todolabel.hide{display: none;}
+.todolabel.list > .children{height: auto;}
 .todolabel .title{
     position: relative;
     margin-block-end: 5px;
@@ -94,7 +96,7 @@
 }
 
 
-.todolabel .add-child, .todolabel .remove-this, .todolabel .complete-this, .todolabel .show-this{
+.todolabel .add-child, .todolabel .remove-this, .todolabel .complete-this, .todolabel .show-this, .todolabel .hide-this, .todolabel .list-this{
     position: absolute;
     top: 0;
     right: 5px;
@@ -119,10 +121,14 @@
 .todolabel .remove-this{right: 45px;}
 .todolabel .complete-this{right: 70px;}
 .todolabel .show-this{right: 90px;}
+.todolabel .hide-this{right: 130px;}
+.todolabel .list-this{right: 170px;}
 .todolabel .complete-this input[type="checkbox"]{top: 10px;}
 
 .todolabel .children{
     margin-bottom: 10px;
+    height: 0;
+    overflow: hidden;
 }
 
 /* 
