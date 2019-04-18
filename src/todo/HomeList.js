@@ -33,10 +33,13 @@ class HomeList extends Component {
 				imageClass: '5',
 			},],
 			isShowNewTodo: false,
+			newDesc: undefined,
+			newTitle: undefined,
 		};
 		this.loadHomeList = this.loadHomeList.bind(this);
+		this.newTodo = this.newTodo.bind(this);
+		this.triggerSelfAdaptionPopup = this.triggerSelfAdaptionPopup.bind(this);
 	}
-
 	componentDidMount() {
 		this.loadHomeList();
 	}
@@ -48,17 +51,42 @@ class HomeList extends Component {
 		})
 	}
 
+	newTodo(){
+		let {newTitle, newDesc} = this.state;
+		API.addTodoList(newTitle, newDesc)
+		.then((dataObj) => {
+			console.log(dataObj);
+		})
+	}
+
+	triggerSelfAdaptionPopup(){
+		this.setState({isShowNewTodo: !this.state.isShowNewTodo});
+	}
+
 
 	render() {
+		let self = this;
 		let newTodoFormArr = [
 			{
+				id: '1',
 				title: '标题',
 				placeHolder: '请输入列表标题',
-				type: 'input'
+				type: 'input',
+				stateName: 'newTitle',
+				changeHandler: function(event){
+					console.log('newTitle', event.target.value);
+					self.setState({newTitle: event.target.value})
+				}
 			},{
+				id: '2',
 				title: '描述',
 				placeHolder: '请输入列表描述',
-				type: 'input'
+				type: 'input',
+				stateName: 'newDesc',
+				changeHandler: function(event){
+					console.log('newDesc', event.target.value);
+					self.setState({newDesc: event.target.value})
+				}
 			}
 		]
 
@@ -75,13 +103,15 @@ class HomeList extends Component {
 					})}
 				</div>
 				<div className="btnbox">
-					<div className="divact btn add-todo-list-btn" onClick={() => {this.newTodo()}}>新增TodoList</div>
+					<div className="divact btn add-todo-list-btn" onClick={() => {this.triggerSelfAdaptionPopup()}}>新增TodoList</div>
 				</div>
 				{
 					this.state.isShowNewTodo ?
 					(<SelfAdaptionPopup 
 						title="新建todo列表"
 						formArr={newTodoFormArr}
+						triggerSelfAdaptionPopup={this.triggerSelfAdaptionPopup}
+						newTodo={this.newTodo}
 					/>) :
 					null
 				}

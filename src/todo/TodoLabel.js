@@ -21,6 +21,7 @@ class TodoLabel extends Component {
 
 	render() {
 		const {keyValue, title, desc, isComplete, children, isArrange, isHide, isList} = this.props; // 基础信息
+		console.log(title);
 		const {searchTodoByKey, setTodoTitle, setTodoDesc, labelAddChild, labelRemoveThis, labelHideThis, labelListThis, labelSetCompleteValue} = this.props; // function部分
 		const {marginLeft, perMarginLeft, fontSize, perFontSize} = this.props; // css样式部分
 		// console.log(marginLeft,perMarginLeft, fontSize, perFontSize);

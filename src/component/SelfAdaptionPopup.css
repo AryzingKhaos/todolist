@@ -1,0 +1,57 @@
+/*弹窗通用逻辑*/
+.popup{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 102;
+}
+.popup .mask{
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,.5);
+}
+.popup .wrap{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -35%;
+	width: 70%;
+	border-radius: 10px;
+	background-color: #fff;
+}
+.popup .wrap .close{
+	display: block;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	width: 25px;
+	height: 25px;
+	-webkit-background-size: 100% 100%;
+	background-size: 100% 100%;
+}
+/*弹窗通用逻辑end*/
+
+.SelfAdaptionPopup .wrap{
+    margin: -200px 0 0 -275px;
+    width: 550px;
+    height: 400px;
+}
+.SelfAdaptionPopup .wrap .title{
+    margin-top: 15px;
+    width: 100%;
+    text-align: center;
+    font: normal 20px "microsoft yahei";
+}
+.SelfAdaptionPopup .wrap .content{
+    height: 250px;
+}
+.SelfAdaptionPopup .wrap .btn-box{
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
+}
+
+
+
