@@ -56,6 +56,8 @@ class HomeList extends Component {
 		API.addTodoList(newTitle, newDesc)
 		.then((dataObj) => {
 			console.log(dataObj);
+			this.setState({list: dataObj.data});
+			this.triggerSelfAdaptionPopup();
 		})
 	}
 
@@ -74,7 +76,7 @@ class HomeList extends Component {
 				type: 'input',
 				stateName: 'newTitle',
 				changeHandler: function(event){
-					console.log('newTitle', event.target.value);
+					// console.log('newTitle', event.target.value);
 					self.setState({newTitle: event.target.value})
 				}
 			},{
@@ -84,7 +86,7 @@ class HomeList extends Component {
 				type: 'input',
 				stateName: 'newDesc',
 				changeHandler: function(event){
-					console.log('newDesc', event.target.value);
+					// console.log('newDesc', event.target.value);
 					self.setState({newDesc: event.target.value})
 				}
 			}

@@ -84,23 +84,20 @@ app.get('/todo/read', function(req, res){
         res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
     }
 
-    fs.readFile('./src/mock/todo.json', function(err, data){
-        if(err){
-            res.send(1005, null, '读取文件失败');
-            return console.error(err);
-        }
-        var dataStr = data.toString();//将二进制的数据转换为字符串
-        // console.log(dataStr);
-        var dataObj = JSON.parse(dataStr);
-        // console.log(dataObj);
+    file.readMock()
+    .then(function(dataObj){
+        // var dataObj = JSON.parse(dataStr);
         let findTodo = util.findTodoById(dataObj, parseInt(id));
-        // console.log(findTodo);
-        // console.log(typeof findTodo.todo);
         if(findTodo){
             findTodo.todo = JSON.parse(findTodo.todo);
             res.send(successJsonFunc(findTodo.todo));
         }else{
             res.send(failJsonFunc(1009, {}, '没有找到这个id的todo'));
+        }
+    }).catch(function(err){
+        if(err){
+            res.send(1005, null, '读取文件失败');
+            return console.error(err);
         }
     })
 })
@@ -109,19 +106,10 @@ app.post('/todo/save', function(req, res){
 
     file.readMock()
     .then(function(data){
-        // 备份todo
-        return file.backupTodo(data.toString()).then(function(){
-            console.log('----------备份todo成功-------------');
-            return data.toString();//将二进制的数据转换为字符串
-        }).catch(function(err){
-            return console.error(err);
-        })
-    })
-    .then(function(dataStr){
         // console.log(dataStr);
         // 获取请求的内容
         let finalStr, todoJsonStr, todoId;
-        let data = JSON.parse(dataStr);
+        // let data = JSON.parse(dataStr);
         console.log(req.body);
         if(req.body){
            todoJsonStr = JSON.stringify(req.body.todo);
@@ -143,8 +131,8 @@ app.post('/todo/save', function(req, res){
     })
     .then(function(finalStr){
         // 写入todo.json文件
-        return file.writeTodo(finalStr).then(function(data){
-            console.log('----------保存todo成功-------------');
+        return file.writeMockTodo(finalStr).then(function(data){
+            console.log('————————————保存todo成功————————————');
             res.send(successJsonFunc(null));
         }).catch(function(err){
             res.send(1005, null, '写入文件失败');
@@ -162,7 +150,6 @@ app.post('/todo/save', function(req, res){
             res.send(1005, null, '读取文件失败');
             return console.error(err);
         }
-        
     })
 })
 
@@ -171,18 +158,10 @@ app.post('/todo/add', function(req, res){
 
     file.readMock()
     .then(function(data){
-        // 备份todo
-        return file.backupTodo(data.toString()).then(function(data){
-            console.log('----------备份todo成功-------------');
-            return data;
-        }).catch(function(err){
-            return console.error(err);
-        })
-    })
-    .then(function(dataStr){
         // 获取请求的内容
-        let finalStr, todoListTitle, todoListDesc;
-        let data = JSON.parse(dataStr);
+        console.log(data);
+        // let finalStr, todoListTitle, todoListDesc;
+        // let data = JSON.parse(dataStr);
         console.log(req.body);
         if(req.body){
            todoListTitle = req.body.title;
@@ -199,19 +178,17 @@ app.post('/todo/add', function(req, res){
             name: todoListTitle,
             desc: todoListDesc,
             updateTime: Date.parse(new Date()),
-            todo: [],
+            todo: "[]",
         });
 
         console.log(data);
-        finalStr = JSON.stringify(data);
-
-        return finalStr;
+        return data;
     })
-    .then(function(finalStr){
+    .then(function(finalData){
         // 写入todo.json文件
-        return file.writeTodo(finalStr).then(function(data){
-            console.log('----------保存todo成功-------------');
-            res.send(successJsonFunc(null));
+        return file.writeMockTodo(finalData).then(function(data){
+            console.log('————————————保存todo成功————————————');
+            res.send(successJsonFunc(data));
         }).catch(function(err){
             res.send(1005, null, '写入文件失败');
             return console.error(err);
@@ -220,15 +197,6 @@ app.post('/todo/add', function(req, res){
     .catch(function(err){
         res.send(1005, null, '读取文件失败');
         return console.error(err);
-    })
-
-
-    fs.readFile('./src/mock/todo.json', function(err, data){
-        if(err){
-            res.send(1005, null, '读取文件失败');
-            return console.error(err);
-        }
-        
     })
 })
 
@@ -253,13 +221,22 @@ app.get('/todo/list', function(req, res){
         res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
     }
 
-    fs.readFile('./src/mock/todo.json', function(err, data){
-        if(err){
-            res.send(1005, null, '读取文件失败');
-            return console.error(err);
-        }
-        var dataStr = data.toString();//将二进制的数据转换为字符串
-        var dataObj = JSON.parse(dataStr); // 这是个数组
+    // fs.readFile('./src/mock/todo.json', function(err, data){
+    //     if(err){
+    //         res.send(1005, null, '读取文件失败');
+    //         return console.error(err);
+    //     }
+    //     var dataStr = data.toString();//将二进制的数据转换为字符串
+    //     var dataObj = JSON.parse(dataStr); // 这是个数组
+    //     if(dataObj){
+    //         res.send(successJsonFunc(dataObj));
+    //     }else{
+    //         res.send(failJsonFunc(1010, {}, '没有todo列表'));
+    //     }
+    // })
+
+    file.readMock()
+    .then(function(dataObj){
         if(dataObj){
             res.send(successJsonFunc(dataObj));
         }else{

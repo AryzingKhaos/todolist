@@ -22,7 +22,7 @@ const SelfAdaptionPopup = (props) => {
                 </div>
 
                 <div className="btn-box">
-                    <div className="divact btn add-todo-list-btn" onClick={() => {this.newTodo()}}>确定</div>
+                    <div className="divact btn add-todo-list-btn" onClick={() => {props.newTodo()}}>确定</div>
                     <div className="divact btn add-todo-list-btn" onClick={props.triggerSelfAdaptionPopup}>取消</div>
                 </div>
                 

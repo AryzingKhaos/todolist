@@ -339,7 +339,7 @@ class TodoLsit extends Component {
 
 	render() {
 		console.log(this.state.todo);
-		if(!this.state.todo.length){
+		if(!this.state.todo){
 			return '无此todo';
 		}
 		let copyTodo = util.deepCopy(this.state.todo);
