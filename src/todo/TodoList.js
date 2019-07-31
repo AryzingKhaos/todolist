@@ -101,9 +101,8 @@ class TodoLsit extends Component {
 		this.labelSetParentsCompletedValue = this.labelSetParentsCompletedValue.bind(this);
 		this.labelSetChildrenCompletedValue = this.labelSetChildrenCompletedValue.bind(this);
 		
+		this.editTodo = null; // 当前编辑的todo
 	}
-
-	editTodo = null; // 当前编辑的todo
 
 	componentDidMount() {
 		let id = this.props.match.params.id;
