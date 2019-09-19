@@ -1,0 +1,74 @@
+
+
+.divact{
+	opacity: 1;
+	transition: .1s all ease;
+}
+.divact:active{
+	opacity: .65;
+	transition: .1s all ease;
+	transform: scale(.97,.97);
+}
+div,a,span,i,b,p{
+    box-sizing: border-box;
+    background-size: 100% 100%;
+}
+
+body{
+    background-color: #f1f1f1;
+}
+.hide{
+    display: none;
+}
+
+.main{
+    margin: 0 auto;
+    width: 100%;;
+    max-width: 1024px;
+    background-color: #f1f1f1;
+}
+
+/* 通用按钮 */
+.btn{
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 20px;
+    width: 100px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    border: 1px solid #fff;
+    background-color: #39b0ff;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+}
+.btn:last-child{
+    margin-right: 0;
+}
+
+/* 自定义checkbox */
+input[type="checkbox"] + label > .checkbox-dot::before {
+    content: "\a0";
+    display: inline-block;
+    vertical-align: 10px;
+    width: 20px;
+    height: 20px;
+    /* margin-right: 20px; */
+    margin-top: 5px;
+    border-radius: 5px;
+    background-color: #ddd;
+    font-size: 40px;
+    font-weight: bold;
+    line-height: 20px;
+}
+input[type="checkbox"]:checked  + label > .checkbox-dot::before {
+    content: "\2713";
+    font-size: 34px;
+    background-color: #ddd;
+    color: #39b0ff;
+}
+input[type="checkbox"] {
+    position: absolute;
+    clip: rect(0, 0, 0, 0);
+}

@@ -88,7 +88,6 @@ class TodoLsit extends Component {
 		this.arrangeTodo = this.arrangeTodo.bind(this);
 		this.labelHideThis = this.labelHideThis.bind(this);
 		this.showAllTodo = this.showAllTodo.bind(this);
-		this.setArrayAllValue = this.setArrayAllValue.bind(this);
 		this.labelListThis = this.labelListThis.bind(this);
 
 		this.searchTodoByKey = this.searchTodoByKey.bind(this);
@@ -128,6 +127,10 @@ class TodoLsit extends Component {
 		historyTodo.push(stateTodo);
 		console.log(historyTodo);
 		// console.log(historyTodo[0][0].children[1].title);
+
+		// 递归遍历todo，重新确定整个列表的值
+		// this.editTodo = util.refreshData(this.editTodo);
+
 		this.setState({
 			historyTodo: historyTodo,
 			todo: this.editTodo,
@@ -168,6 +171,9 @@ class TodoLsit extends Component {
 			console.log(data);
 			if(data.code === 0)
 				alert('保存成功~');
+			else{
+				alert('保存失败！！！！！');
+			}
 		})
 	}
 
@@ -194,6 +200,22 @@ class TodoLsit extends Component {
 			}
 		}
 		return null;
+
+		// let result = todo.find(item => item.key === key);
+		// if(result) return result;
+		// else{
+		// 	let childrenResult = this.searchTodoByKey(key, todo.reduce((arr, item) => {
+		// 		if(item.children && item.children.length){
+		// 			return arr.concat(item.children);
+		// 		}else{
+		// 			return arr;
+		// 		}
+		// 	}, []));
+		// 	console.log(childrenResult);
+		// 	if(childrenResult) return childrenResult;
+		// 	else return null;
+		// }
+		
 	}
 
 	setTodoTitle(key, title){
@@ -260,30 +282,15 @@ class TodoLsit extends Component {
 	// 显示所有隐藏的todo
 	showAllTodo(){
 		this.editTodo = util.deepCopy(this.state.todo);
-		this.setArrayAllValue(this.editTodo, 'isHide', false);
+		util.setArrayAllValue(this.editTodo, 'isHide', false);
 		this.updateTodo();
-	}
-
-	
-
-	// 遍历数组，将所有的key属性都设置为value的值
-	setArrayAllValue(array, key, value){
-		for(let i = 0;  i < array.length; i++){
-			array[i][key] = value;
-			this.setArrayAllValue(array[i].children, key, value);
-		}
 	}
 
 	// 显示该项的所有子项
 	labelListThis(key){
 		this.editTodo = util.deepCopy(this.state.todo);
 		let todo = this.searchTodoByKey(key, this.editTodo);
-		if(!todo.isList){
-			todo.isList = true;
-		}else{
-			todo.isList = false;
-		}
-
+		todo.isList = !todo.isList;
 		this.updateTodo();
 	}
 
@@ -329,11 +336,12 @@ class TodoLsit extends Component {
 	checkChildrenIsAllCompleted(key){
 		let todo = this.searchTodoByKey(key);
 		if(!todo) return false;
-		for(let i = 0; i < todo.children.length; i++ ){
-			if(!todo.children[i].isComplete) return false;
-		}
-		// console.log(todo.title+' is completed!');
-		return true;
+		// for(let i = 0; i < todo.children.length; i++ ){
+		// 	if(!todo.children[i].isComplete) return false;
+		// }
+		// // console.log(todo.title+' is completed!');
+		// return true;
+		return todo.children.every(item => item.isComplete === true);
 	}
 
 	render() {
